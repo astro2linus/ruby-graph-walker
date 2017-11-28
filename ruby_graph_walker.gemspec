@@ -11,4 +11,6 @@ Gem::Specification.new do |s|
   s.files       = lib_files
   s.homepage    = ''
   s.license       = 'MIT'
+
+  s.add_runtime_dependency 'pry',  '~> 0.10'
 end

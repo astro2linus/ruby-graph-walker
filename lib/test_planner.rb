@@ -1,4 +1,5 @@
 require 'colorize'
+require 'pry'
 
 module RubyGraphWalker
   module TestPlanner
@@ -19,7 +20,8 @@ module RubyGraphWalker
         log_warning "Warning: multiple vertices found: #{candidates.map {|c| c[:name]}.join(' ') }"   
       elsif candidates.size == 0
         if send(query_method, "*").any?
-          raise "No vertex found"
+          STDOUT.puts "No vertex found !!"
+          binding.pry
         else
           raise "Connection refused"
         end
@@ -50,6 +52,7 @@ module RubyGraphWalker
 
     def log(msg)
       text_logger.puts(msg)
+      STDOUT.puts(msg)
     end
 
     def start(graph, args = {})
