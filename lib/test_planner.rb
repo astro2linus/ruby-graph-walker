@@ -17,10 +17,12 @@ module RubyGraphWalker
       end
 
       if candidates.size > 1
-        log_warning "Warning: multiple vertices found: #{candidates.map {|c| c[:name]}.join(' ') }"   
+        STDOUT.puts "Warning: multiple vertices found:"
+        candidates.each do |c|
+          STDOUT.puts "#{c.name}  zindex: #{c.zindex}"
+        end
       elsif candidates.size == 0
-        if send(query_method, "*").any?
-          STDOUT.puts "No vertex found !!"
+        if send(query_method, "*").any?   
           binding.pry
         else
           raise "Connection refused"
@@ -31,7 +33,7 @@ module RubyGraphWalker
 
     def path_to(to, args = {})
       v = search_vertex
-      @graph.find_path(v.name, to, args)
+      @graph.find_path(v.name, to, args)  
     end
 
     def run(plan, args = {})
@@ -41,6 +43,7 @@ module RubyGraphWalker
         edge = p[:e]
         raise "edge is nil" if edge.nil?
         edge.run
+
         @graph.vertices[edge.from].visited = true
       end
     end
@@ -68,16 +71,20 @@ module RubyGraphWalker
         rescue => e
           edge.error_count += 1
           log edge.name + " failed! #{edge.error_count}"
-          e.backtrace.each do |text|
-            log text
-          end 
+
+          # unless e.backtrace
+          #   e.backtrace.each do |text|
+          #     log text
+          #   end 
+          # end
 
           retries = 3
           begin
             sleep 10
             new_plan = path_to(edge.from)
             run(new_plan, args)
-          rescue
+          rescue => e
+            STDOUT.puts e
             edge.error_count += 1
             retry unless (retries -= 1).zero?
           end

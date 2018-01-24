@@ -10,7 +10,7 @@ module RubyGraphWalker
       @weight = args[:weight] || 1
       @trait = args[:trait]
       @visited = args[:visited] || false
-      @weight = args[:zindex] || 0
+      @zindex = args[:zindex] || 0
       @edges = []
 
       args[:edges].each do |edge|
@@ -41,6 +41,14 @@ module RubyGraphWalker
     end
 
     def run
+      # begin
+      #   @proc.call
+      # rescue Exception => e
+      #   STDOUT.puts @proc
+      #   # binding.pry
+      #   @visited = true
+      #   raise e
+      # end
       @proc.call
       @visited = true
     end
