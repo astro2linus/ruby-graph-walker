@@ -54,7 +54,7 @@ module RubyGraphWalker
     end
 
     def log(msg)
-      text_logger.puts(msg)
+      # text_logger.puts(msg)
       STDOUT.puts(msg)
     end
 
@@ -96,7 +96,12 @@ module RubyGraphWalker
         log "#{k} error count: #{v.error_count}"
       end
 
-      text_logger.close
+      # text_logger.close
+      @graph.edges_by_name
+    end
+
+    def explore(graph)
+      
     end
 
     private
