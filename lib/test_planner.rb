@@ -54,7 +54,7 @@ module RubyGraphWalker
     end
 
     def log(msg)
-      # text_logger.puts(msg)
+      text_logger.puts(msg)
       STDOUT.puts(msg)
     end
 
@@ -72,11 +72,11 @@ module RubyGraphWalker
           edge.error_count += 1
           log edge.name + " failed! #{edge.error_count}"
 
-          # unless e.backtrace
-          #   e.backtrace.each do |text|
-          #     log text
-          #   end 
-          # end
+          unless e.backtrace
+            e.backtrace.each do |text|
+              log text
+            end 
+          end
 
           retries = 3
           begin
@@ -96,7 +96,7 @@ module RubyGraphWalker
         log "#{k} error count: #{v.error_count}"
       end
 
-      # text_logger.close
+      text_logger.close
       @graph.edges_by_name
     end
 
